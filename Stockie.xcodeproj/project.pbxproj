@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BBCB8C872405B726002D09A5 /* StockieTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCB8C862405B726002D09A5 /* StockieTableViewController.swift */; };
+		BBF7A106240498EC00E7D177 /* AlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7A105240498EC00E7D177 /* AlertTableViewCell.swift */; };
 		BBFFE3C323EA729F002FE8B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFFE3C223EA729F002FE8B5 /* AppDelegate.swift */; };
 		BBFFE3C523EA729F002FE8B5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFFE3C423EA729F002FE8B5 /* SceneDelegate.swift */; };
 		BBFFE3C723EA729F002FE8B5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFFE3C623EA729F002FE8B5 /* ViewController.swift */; };
@@ -36,6 +38,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BBC2222B23FD7C9000322281 /* Stockie.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Stockie.entitlements; sourceTree = "<group>"; };
+		BBCB8C862405B726002D09A5 /* StockieTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockieTableViewController.swift; sourceTree = "<group>"; };
+		BBF7A105240498EC00E7D177 /* AlertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTableViewCell.swift; sourceTree = "<group>"; };
 		BBFFE3BF23EA729F002FE8B5 /* Stockie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stockie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBFFE3C223EA729F002FE8B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BBFFE3C423EA729F002FE8B5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +83,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BB3EB2D923FF3ED100F583D9 /* UI Elements */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "UI Elements";
+			sourceTree = "<group>";
+		};
 		BBFFE3B623EA729F002FE8B5 = {
 			isa = PBXGroup;
 			children = (
@@ -101,9 +113,13 @@
 		BBFFE3C123EA729F002FE8B5 /* Stockie */ = {
 			isa = PBXGroup;
 			children = (
+				BBC2222B23FD7C9000322281 /* Stockie.entitlements */,
 				BBFFE3C223EA729F002FE8B5 /* AppDelegate.swift */,
 				BBFFE3C423EA729F002FE8B5 /* SceneDelegate.swift */,
 				BBFFE3C623EA729F002FE8B5 /* ViewController.swift */,
+				BBCB8C862405B726002D09A5 /* StockieTableViewController.swift */,
+				BBF7A105240498EC00E7D177 /* AlertTableViewCell.swift */,
+				BB3EB2D923FF3ED100F583D9 /* UI Elements */,
 				BBFFE3C823EA729F002FE8B5 /* Main.storyboard */,
 				BBFFE3CE23EA72A2002FE8B5 /* Assets.xcassets */,
 				BBFFE3D023EA72A2002FE8B5 /* LaunchScreen.storyboard */,
@@ -264,8 +280,10 @@
 			files = (
 				BBFFE3C723EA729F002FE8B5 /* ViewController.swift in Sources */,
 				BBFFE3C323EA729F002FE8B5 /* AppDelegate.swift in Sources */,
+				BBCB8C872405B726002D09A5 /* StockieTableViewController.swift in Sources */,
 				BBFFE3CD23EA72A0002FE8B5 /* Stockie.xcdatamodeld in Sources */,
 				BBFFE3C523EA729F002FE8B5 /* SceneDelegate.swift in Sources */,
+				BBF7A106240498EC00E7D177 /* AlertTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,7 +388,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -424,7 +442,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -438,6 +456,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Stockie/Stockie.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WNCN9TJFT3;
 				INFOPLIST_FILE = Stockie/Info.plist;
@@ -445,7 +464,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.acapplications.Stockie;
+				PRODUCT_BUNDLE_IDENTIFIER = com.acapplications.stockie;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -456,6 +475,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Stockie/Stockie.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WNCN9TJFT3;
 				INFOPLIST_FILE = Stockie/Info.plist;
@@ -463,7 +483,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.acapplications.Stockie;
+				PRODUCT_BUNDLE_IDENTIFIER = com.acapplications.stockie;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
