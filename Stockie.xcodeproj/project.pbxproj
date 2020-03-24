@@ -7,11 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB0CCD3F241F3C2D002CAA8F /* WatchlistsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0CCD3E241F3C2D002CAA8F /* WatchlistsTableViewController.swift */; };
+		BB0CCD43241FD7FE002CAA8F /* WatchlistTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0CCD42241FD7FE002CAA8F /* WatchlistTableViewCell.swift */; };
+		BB307B0B240828BA00EF5C59 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB307B0A240828BA00EF5C59 /* CustomTextField.swift */; };
+		BB67D5B024173A260099780F /* NoAlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB67D5AF24173A260099780F /* NoAlertTableViewCell.swift */; };
+		BB9EAE3B2417F67A00E0CD16 /* AdjustTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9EAE3A2417F67A00E0CD16 /* AdjustTableViewCell.swift */; };
+		BBBDE47524071BAD008F53A2 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBDE47424071BAD008F53A2 /* CreateAccountViewController.swift */; };
+		BBBDE47B24075271008F53A2 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBDE47A24075271008F53A2 /* CustomButton.swift */; };
 		BBCB8C872405B726002D09A5 /* StockieTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCB8C862405B726002D09A5 /* StockieTableViewController.swift */; };
+		BBCB8C8B2405C002002D09A5 /* NetworkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCB8C8A2405C002002D09A5 /* NetworkHandler.swift */; };
+		BBCB8C8D2405D658002D09A5 /* CoreDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCB8C8C2405D658002D09A5 /* CoreDataHandler.swift */; };
+		BBCB8C942405D93C002D09A5 /* CoreDataObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCB8C932405D93C002D09A5 /* CoreDataObjects.swift */; };
+		BBCB8C962405F4FC002D09A5 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCB8C952405F4FC002D09A5 /* LoginViewController.swift */; };
+		BBCB8C982405F732002D09A5 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCB8C972405F732002D09A5 /* NetworkError.swift */; };
+		BBF61505241860D900BD5D4A /* SelectWatchlistTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF61504241860D800BD5D4A /* SelectWatchlistTableViewController.swift */; };
 		BBF7A106240498EC00E7D177 /* AlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7A105240498EC00E7D177 /* AlertTableViewCell.swift */; };
+		BBF81300240E1963002C11F7 /* CoreDataHandlerErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF812FF240E1963002C11F7 /* CoreDataHandlerErrors.swift */; };
+		BBF81302240F2CB5002C11F7 /* NetworkHandlerErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF81301240F2CB5002C11F7 /* NetworkHandlerErrors.swift */; };
 		BBFFE3C323EA729F002FE8B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFFE3C223EA729F002FE8B5 /* AppDelegate.swift */; };
 		BBFFE3C523EA729F002FE8B5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFFE3C423EA729F002FE8B5 /* SceneDelegate.swift */; };
-		BBFFE3C723EA729F002FE8B5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFFE3C623EA729F002FE8B5 /* ViewController.swift */; };
 		BBFFE3CA23EA729F002FE8B5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBFFE3C823EA729F002FE8B5 /* Main.storyboard */; };
 		BBFFE3CD23EA72A0002FE8B5 /* Stockie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BBFFE3CB23EA72A0002FE8B5 /* Stockie.xcdatamodeld */; };
 		BBFFE3CF23EA72A2002FE8B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBFFE3CE23EA72A2002FE8B5 /* Assets.xcassets */; };
@@ -38,13 +52,27 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BB0CCD3E241F3C2D002CAA8F /* WatchlistsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistsTableViewController.swift; sourceTree = "<group>"; };
+		BB0CCD42241FD7FE002CAA8F /* WatchlistTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistTableViewCell.swift; sourceTree = "<group>"; };
+		BB307B0A240828BA00EF5C59 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		BB67D5AF24173A260099780F /* NoAlertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoAlertTableViewCell.swift; sourceTree = "<group>"; };
+		BB9EAE3A2417F67A00E0CD16 /* AdjustTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustTableViewCell.swift; sourceTree = "<group>"; };
+		BBBDE47424071BAD008F53A2 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
+		BBBDE47A24075271008F53A2 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		BBC2222B23FD7C9000322281 /* Stockie.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Stockie.entitlements; sourceTree = "<group>"; };
 		BBCB8C862405B726002D09A5 /* StockieTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockieTableViewController.swift; sourceTree = "<group>"; };
+		BBCB8C8A2405C002002D09A5 /* NetworkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHandler.swift; sourceTree = "<group>"; };
+		BBCB8C8C2405D658002D09A5 /* CoreDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHandler.swift; sourceTree = "<group>"; };
+		BBCB8C932405D93C002D09A5 /* CoreDataObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataObjects.swift; sourceTree = "<group>"; };
+		BBCB8C952405F4FC002D09A5 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		BBCB8C972405F732002D09A5 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		BBF61504241860D800BD5D4A /* SelectWatchlistTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectWatchlistTableViewController.swift; sourceTree = "<group>"; };
 		BBF7A105240498EC00E7D177 /* AlertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTableViewCell.swift; sourceTree = "<group>"; };
+		BBF812FF240E1963002C11F7 /* CoreDataHandlerErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHandlerErrors.swift; sourceTree = "<group>"; };
+		BBF81301240F2CB5002C11F7 /* NetworkHandlerErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHandlerErrors.swift; sourceTree = "<group>"; };
 		BBFFE3BF23EA729F002FE8B5 /* Stockie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stockie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBFFE3C223EA729F002FE8B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BBFFE3C423EA729F002FE8B5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		BBFFE3C623EA729F002FE8B5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		BBFFE3C923EA729F002FE8B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BBFFE3CC23EA72A0002FE8B5 /* Stockie.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Stockie.xcdatamodel; sourceTree = "<group>"; };
 		BBFFE3CE23EA72A2002FE8B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -83,11 +111,72 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BB0CCD40241FD7B7002CAA8F /* Alert Tab */ = {
+			isa = PBXGroup;
+			children = (
+				BBCB8C862405B726002D09A5 /* StockieTableViewController.swift */,
+				BBF61504241860D800BD5D4A /* SelectWatchlistTableViewController.swift */,
+				BBF7A105240498EC00E7D177 /* AlertTableViewCell.swift */,
+				BB67D5AF24173A260099780F /* NoAlertTableViewCell.swift */,
+				BB9EAE3A2417F67A00E0CD16 /* AdjustTableViewCell.swift */,
+			);
+			path = "Alert Tab";
+			sourceTree = "<group>";
+		};
+		BB0CCD41241FD7DB002CAA8F /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				BBFFE3C223EA729F002FE8B5 /* AppDelegate.swift */,
+				BBFFE3C423EA729F002FE8B5 /* SceneDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
+		BB0CCD44241FDA18002CAA8F /* Watchlists Tab */ = {
+			isa = PBXGroup;
+			children = (
+				BB0CCD3E241F3C2D002CAA8F /* WatchlistsTableViewController.swift */,
+				BB0CCD42241FD7FE002CAA8F /* WatchlistTableViewCell.swift */,
+			);
+			path = "Watchlists Tab";
+			sourceTree = "<group>";
+		};
 		BB3EB2D923FF3ED100F583D9 /* UI Elements */ = {
 			isa = PBXGroup;
 			children = (
+				BBBDE47A24075271008F53A2 /* CustomButton.swift */,
+				BB307B0A240828BA00EF5C59 /* CustomTextField.swift */,
 			);
 			path = "UI Elements";
+			sourceTree = "<group>";
+		};
+		BBBDE47724071BBA008F53A2 /* Login Flow */ = {
+			isa = PBXGroup;
+			children = (
+				BBCB8C952405F4FC002D09A5 /* LoginViewController.swift */,
+				BBBDE47424071BAD008F53A2 /* CreateAccountViewController.swift */,
+			);
+			path = "Login Flow";
+			sourceTree = "<group>";
+		};
+		BBCB8C8E2405D8A3002D09A5 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				BBCB8C8C2405D658002D09A5 /* CoreDataHandler.swift */,
+				BBCB8C932405D93C002D09A5 /* CoreDataObjects.swift */,
+				BBF812FF240E1963002C11F7 /* CoreDataHandlerErrors.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		BBCB8C992405F73A002D09A5 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				BBCB8C8A2405C002002D09A5 /* NetworkHandler.swift */,
+				BBCB8C972405F732002D09A5 /* NetworkError.swift */,
+				BBF81301240F2CB5002C11F7 /* NetworkHandlerErrors.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		BBFFE3B623EA729F002FE8B5 = {
@@ -114,12 +203,13 @@
 			isa = PBXGroup;
 			children = (
 				BBC2222B23FD7C9000322281 /* Stockie.entitlements */,
-				BBFFE3C223EA729F002FE8B5 /* AppDelegate.swift */,
-				BBFFE3C423EA729F002FE8B5 /* SceneDelegate.swift */,
-				BBFFE3C623EA729F002FE8B5 /* ViewController.swift */,
-				BBCB8C862405B726002D09A5 /* StockieTableViewController.swift */,
-				BBF7A105240498EC00E7D177 /* AlertTableViewCell.swift */,
+				BB0CCD41241FD7DB002CAA8F /* Delegates */,
 				BB3EB2D923FF3ED100F583D9 /* UI Elements */,
+				BBBDE47724071BBA008F53A2 /* Login Flow */,
+				BB0CCD40241FD7B7002CAA8F /* Alert Tab */,
+				BB0CCD44241FDA18002CAA8F /* Watchlists Tab */,
+				BBCB8C992405F73A002D09A5 /* Network */,
+				BBCB8C8E2405D8A3002D09A5 /* CoreData */,
 				BBFFE3C823EA729F002FE8B5 /* Main.storyboard */,
 				BBFFE3CE23EA72A2002FE8B5 /* Assets.xcassets */,
 				BBFFE3D023EA72A2002FE8B5 /* LaunchScreen.storyboard */,
@@ -278,12 +368,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBFFE3C723EA729F002FE8B5 /* ViewController.swift in Sources */,
+				BBF81302240F2CB5002C11F7 /* NetworkHandlerErrors.swift in Sources */,
+				BB307B0B240828BA00EF5C59 /* CustomTextField.swift in Sources */,
+				BBCB8C962405F4FC002D09A5 /* LoginViewController.swift in Sources */,
+				BBCB8C942405D93C002D09A5 /* CoreDataObjects.swift in Sources */,
+				BBCB8C8D2405D658002D09A5 /* CoreDataHandler.swift in Sources */,
+				BBBDE47524071BAD008F53A2 /* CreateAccountViewController.swift in Sources */,
+				BB0CCD3F241F3C2D002CAA8F /* WatchlistsTableViewController.swift in Sources */,
+				BBF81300240E1963002C11F7 /* CoreDataHandlerErrors.swift in Sources */,
 				BBFFE3C323EA729F002FE8B5 /* AppDelegate.swift in Sources */,
 				BBCB8C872405B726002D09A5 /* StockieTableViewController.swift in Sources */,
 				BBFFE3CD23EA72A0002FE8B5 /* Stockie.xcdatamodeld in Sources */,
 				BBFFE3C523EA729F002FE8B5 /* SceneDelegate.swift in Sources */,
+				BBBDE47B24075271008F53A2 /* CustomButton.swift in Sources */,
+				BB0CCD43241FD7FE002CAA8F /* WatchlistTableViewCell.swift in Sources */,
 				BBF7A106240498EC00E7D177 /* AlertTableViewCell.swift in Sources */,
+				BB67D5B024173A260099780F /* NoAlertTableViewCell.swift in Sources */,
+				BB9EAE3B2417F67A00E0CD16 /* AdjustTableViewCell.swift in Sources */,
+				BBF61505241860D900BD5D4A /* SelectWatchlistTableViewController.swift in Sources */,
+				BBCB8C8B2405C002002D09A5 /* NetworkHandler.swift in Sources */,
+				BBCB8C982405F732002D09A5 /* NetworkError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

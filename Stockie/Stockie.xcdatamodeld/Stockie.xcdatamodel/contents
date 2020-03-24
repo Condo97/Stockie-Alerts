@@ -1,4 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Alert" representedClassName="Alert" syncable="YES" codeGenerationType="class">
+        <attribute name="alertID" optional="YES" attributeType="String"/>
+        <attribute name="executed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="hidden" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="overPrice" optional="YES" attributeType="Boolean" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="symbol" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Stock" representedClassName="Stock" syncable="YES" codeGenerationType="class">
+        <attribute name="company" optional="YES" attributeType="String"/>
+        <attribute name="lastPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="symbol" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="StockieUser" representedClassName="StockieUser" syncable="YES" codeGenerationType="class">
+        <attribute name="identityToken" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Watchlist" representedClassName="Watchlist" syncable="YES" codeGenerationType="class">
+        <attribute name="isDefault" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <attribute name="watchlistID" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="WatchlistStock" representedClassName="WatchlistStock" syncable="YES" codeGenerationType="class">
+        <attribute name="symbol" optional="YES" attributeType="String"/>
+        <attribute name="watchlistID" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="Alert" positionX="-45" positionY="27" width="128" height="148"/>
+        <element name="Stock" positionX="-54" positionY="9" width="128" height="88"/>
+        <element name="StockieUser" positionX="-63" positionY="-18" width="128" height="73"/>
+        <element name="Watchlist" positionX="-36" positionY="36" width="128" height="103"/>
+        <element name="WatchlistStock" positionX="-36" positionY="45" width="128" height="73"/>
+    </elements>
 </model>

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol AlertTableViewCellDelegate {
-    func didPressArrowButton()
+    func didPressArrowButton(sender: Any)
 }
 
 class AlertTableViewCell: UITableViewCell {
@@ -35,6 +35,6 @@ class AlertTableViewCell: UITableViewCell {
     }
     
     @IBAction func arrowButton(_ sender: Any) {
-        cellDelegate?.didPressArrowButton()
+        cellDelegate?.didPressArrowButton(sender: sender)
     }
 }

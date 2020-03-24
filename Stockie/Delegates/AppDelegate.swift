@@ -105,11 +105,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
         let token = tokenParts.joined()
+        
+        UserDefaults.standard.set(token, forKey: "DeviceToken");
         print("Device token: \(token)")
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: \(error)")
+        
+        //TODO: Display some sort of message indicating that it would be beneficial to the user to turn on notifications in Settings
     }
 }
 
