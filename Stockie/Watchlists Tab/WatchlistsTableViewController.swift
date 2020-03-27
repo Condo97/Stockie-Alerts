@@ -161,7 +161,7 @@ class WatchlistsTableViewController: UITableViewController {
                 
                 if error == NetworkError.Success {
                     do {
-                        try CoreDataHandler.update(watchlists: watchlistObjects, forUsername: UserDefaults.standard.string(forKey: "loggedInUser")!)
+                        for watchlist in watchlistObjects { try CoreDataHandler.update(watchlist: watchlist, forUsername: UserDefaults.standard.string(forKey: "loggedInUser")!) }
                         
                         DispatchQueue.main.async { self.initGetFromCoreData() }
                     } catch {

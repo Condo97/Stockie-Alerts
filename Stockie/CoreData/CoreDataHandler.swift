@@ -33,6 +33,8 @@ class CoreDataHandler: NSObject {
             user.setValue(stockieUserObject.username, forKeyPath: "username")
             
             try managedContext.save()
+            
+            asyncSave()
         }
     }
     
@@ -60,6 +62,8 @@ class CoreDataHandler: NSObject {
             watchlist.setValue(watchlistObject.watchlistID, forKey: "watchlistID")
             
             try managedContext.save()
+            
+            asyncSave()
         }
     }
     
@@ -84,6 +88,8 @@ class CoreDataHandler: NSObject {
         watchlistStock.setValue(stockObject.symbol, forKey: "symbol")
         
         try managedContext.save()
+        
+        asyncSave()
     }
     
     static func save(stockObject: StockObject) throws {
@@ -101,10 +107,12 @@ class CoreDataHandler: NSObject {
             stock.setValue(stockObject.lastPrice, forKey: "lastPrice")
             
             try managedContext.save()
+            
+            asyncSave()
         }
     }
     
-    static func save(alertObject: AlertObject, toStockieUserObject stockieUserObject: StockieUserObject) throws {
+    static func save(alertObject: AlertObject, toUsername username: String) throws {
         let managedContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedContext.parent = staticManagedContext
         
@@ -115,7 +123,7 @@ class CoreDataHandler: NSObject {
             let alert = NSManagedObject(entity: entity, insertInto: managedContext)
             
             alert.setValue(alertObject.alertID, forKey: "alertID")
-            alert.setValue(stockieUserObject.username, forKey: "username")
+            alert.setValue(username, forKey: "username")
             alert.setValue(alertObject.symbol, forKey: "symbol")
             alert.setValue(alertObject.price, forKey: "price")
             alert.setValue(alertObject.overPrice, forKey: "overPrice")
@@ -123,6 +131,8 @@ class CoreDataHandler: NSObject {
             alert.setValue(alertObject.hidden, forKey: "hidden")
             
             try managedContext.save()
+            
+            asyncSave()
         }
     }
     
@@ -138,24 +148,58 @@ class CoreDataHandler: NSObject {
      *      REMOVES CoreData object if CoreData returns an Object not in the StockieUserObject
      */
     static func update(stockieUser stockieUserObject: StockieUserObject) throws {
-        //Get CoreData []
-        //Check if object is contained in CoreData []
-        //If exists, update in CoreData []
-        //If not exists, create in CoreData []
-        //Check if CoreData object is contained in []
-        //If exists, do nothing
-        //If not exists, remove from CoreData as it must be removed
         let managedContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedContext.parent = staticManagedContext
         
-        var cdStockieUserObject = try getStockieUserObject(forUsername: stockieUserObject.username)
+        let cdStockieUserObject = try getStockieUserObject(forUsername: stockieUserObject.username)
         
-        if cdStockieUserObject == stockieUserObject {
-            return
+        //Update Watchlists
+        var watchlistsToDelete : [WatchlistObject] = NSArray(array: cdStockieUserObject.watchlists) as! [WatchlistObject]
+        var watchlistsToAppend : [WatchlistObject] = NSArray(array: stockieUserObject.watchlists) as! [WatchlistObject]
+        var watchlistsToUpdate : [WatchlistObject] = []
+        
+        for i in 0..<cdStockieUserObject.watchlists.count {
+            for j in 0..<stockieUserObject.watchlists.count {
+                if cdStockieUserObject.watchlists[i].watchlistID == stockieUserObject.watchlists[j].watchlistID {
+                    watchlistsToDelete.remove(at: watchlistsToDelete.lastIndex(of: cdStockieUserObject.watchlists[i])!)
+                    watchlistsToAppend.remove(at: watchlistsToAppend.lastIndex(of: stockieUserObject.watchlists[j])!)
+                    watchlistsToUpdate.append(stockieUserObject.watchlists[j])
+                }
+            }
         }
         
-        try update(watchlists: stockieUserObject.watchlists, forUsername: stockieUserObject.username)
+        for watchlistToDelete in watchlistsToDelete { try remove(watchlistByID: watchlistToDelete.watchlistID) }
+        for watchlistToAppend in watchlistsToAppend { try save(watchlistObject: watchlistToAppend, toUsername: stockieUserObject.username) }
+        for watchlistToUpdate in watchlistsToUpdate { try update(watchlist: watchlistToUpdate, forUsername: cdStockieUserObject.username) }
         
+        
+        //Update Alerts
+        var alertsToDelete : [AlertObject] = NSArray(array: cdStockieUserObject.alerts) as! [AlertObject]
+        var alertsToAppend : [AlertObject] = NSArray(array: stockieUserObject.alerts) as! [AlertObject]
+        var alertsToUpdate : [AlertObject] = []
+        
+        for i in 0..<cdStockieUserObject.alerts.count {
+            for j in 0..<stockieUserObject.alerts.count {
+                if cdStockieUserObject.alerts[i].alertID == stockieUserObject.alerts[j].alertID {
+                    alertsToDelete.remove(at: alertsToDelete.lastIndex(of: cdStockieUserObject.alerts[i])!)
+                    alertsToAppend.remove(at: alertsToAppend.lastIndex(of: stockieUserObject.alerts[j])!)
+                    alertsToUpdate.append(stockieUserObject.alerts[j])
+                }
+            }
+        }
+        
+        for alertToDelete in alertsToDelete { try remove(alertByID: alertToDelete.alertID) }
+        for alertToAppend in alertsToAppend { try save(alertObject: alertToAppend, toUsername: stockieUserObject.username) }
+        for alertToUpdate in alertsToUpdate { try update(alertAttributes: alertToUpdate, toUsername: stockieUserObject.username) }
+        
+        try update(stockieUserAttributes: stockieUserObject)
+        
+//        if cdStockieUserObject == stockieUserObject {
+//            return
+//        }
+//
+//        try update(watchlists: stockieUserObject.watchlists, forUsername: stockieUserObject.username)
+//
 //        if cdStockieUserObject.watchlists != stockieUserObject.watchlists {
 //            for networkWatchlist in stockieUserObject.watchlists {
 //                //Loop through Watchlist []
@@ -202,104 +246,51 @@ class CoreDataHandler: NSObject {
 //            }
 //        }
 //
-        if cdStockieUserObject.alerts != stockieUserObject.alerts {
-            for alertObject in stockieUserObject.alerts {
-                //Loop through Alert []
-                
-                if !cdStockieUserObject.alerts.contains(alertObject) {
-                    //If Alert is not existant in the CoreData Alert []
-                    //This means that the Alert is either:
-                    //      NEW and should be saved
-                    //      MODIFIED and should be updated
-                    
-                    var found = false
-                    for i in 0..<cdStockieUserObject.alerts.count {
-                        let cdAlertObject = cdStockieUserObject.alerts[i]
-                        
-                        if cdAlertObject.alertID == alertObject.alertID {
-                            //The Watchlist is MODIFIED if there is another Watchilst with the same WatchlistID
-                            
-                            try update(alertAttributes: alertObject, toStockieUserObject: stockieUserObject)
-                            cdStockieUserObject.alerts.remove(at: i)
-                            found = true
-                        }
-                    }
-                    
-                    if !found {
-                        //The Watchlist is NEW if there is no other Watchlist with the same WatchlistID
-                        try save(alertObject: alertObject, toStockieUserObject: stockieUserObject)
-                    }
-                }
-            }
-            
-            for i in 0..<cdStockieUserObject.alerts.count {
-                //Loop through CoreData Watchlist []
-                let cdAlertObject = cdStockieUserObject.alerts[i]
-                
-                if !stockieUserObject.alerts.contains(cdAlertObject) {
-                    //If CoreData Watchlist is not existant in the Watchlist []
-                    //This means that the Watchlist has been REMOVED
-                    
-                    try remove(alertByID: cdAlertObject.alertID)
-                    cdStockieUserObject.alerts.remove(at: i)
-                }
-            }
-        }
-        
-        try update(stockieUserAttributes: stockieUserObject)
-    }
-    
-    static func update(watchlists watchlistObjects: [WatchlistObject], forUsername username: String) throws {
-        let managedContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        managedContext.parent = staticManagedContext
-        
-        var cdWatchlists = try getWatchlists(forUsername: username)
-        
-        if cdWatchlists != watchlistObjects {
-            for networkWatchlist in watchlistObjects {
-                //Loop through Watchlist []
-                
-                if !cdWatchlists.contains(networkWatchlist) {
-                    //If Watchlist is not existant in the CoreData Watchlist []
-                    //This means that the Watchilst is either:
-                    //      NEW and should be saved
-                    //      MODIFIED and should be updated
-                    
-                    var found = false
-                    var index = 0
-                    for _ in 0..<cdWatchlists.count {
-                        let cdWatchlistObject = cdWatchlists[index]
-                        
-                        if cdWatchlistObject.watchlistID == networkWatchlist.watchlistID {
-                            //The Watchlist is MODIFIED if there is another Watchilst with the same WatchlistID
-                            
-                            try update(watchlist: networkWatchlist, forUsername: username)
-                            cdWatchlists.remove(at: index)
-                            
-                            found = true
-                        } else { index += 1 }
-                    }
-                    
-                    if !found {
-                        //The Watchlist is NEW if there is no other Watchlist with the same WatchlistID
-                        try save(watchlistObject: networkWatchlist, toUsername: username)
-                    }
-                }
-            }
-            
-            for i in 0..<cdWatchlists.count {
-                //Loop through CoreData Watchlist []
-                let cdWatchlistObject = cdWatchlists[i]
-                
-                if !watchlistObjects.contains(cdWatchlistObject) {
-                    //If CoreData Watchlist is not existant in the Watchlist []
-                    //This means that the Watchlist has been REMOVED
-                    
-                    try remove(watchlistByID: cdWatchlistObject.watchlistID)
-                    cdWatchlists.remove(at: i)
-                }
-            }
-        }
+//        if cdStockieUserObject.alerts != stockieUserObject.alerts {
+//            for alertObject in stockieUserObject.alerts {
+//                //Loop through Alert []
+//
+//                if !cdStockieUserObject.alerts.contains(alertObject) {
+//                    //If Alert is not existant in the CoreData Alert []
+//                    //This means that the Alert is either:
+//                    //      NEW and should be saved
+//                    //      MODIFIED and should be updated
+//
+//                    var found = false
+//                    for i in 0..<cdStockieUserObject.alerts.count {
+//                        let cdAlertObject = cdStockieUserObject.alerts[i]
+//
+//                        if cdAlertObject.alertID == alertObject.alertID {
+//                            //The Watchlist is MODIFIED if there is another Watchilst with the same WatchlistID
+//
+//                            try update(alertAttributes: alertObject, toStockieUserObject: stockieUserObject)
+//                            cdStockieUserObject.alerts.remove(at: i)
+//                            found = true
+//                        }
+//                    }
+//
+//                    if !found {
+//                        //The Watchlist is NEW if there is no other Watchlist with the same WatchlistID
+//                        try save(alertObject: alertObject, toStockieUserObject: stockieUserObject)
+//                    }
+//                }
+//            }
+//
+//            for i in 0..<cdStockieUserObject.alerts.count {
+//                //Loop through CoreData Watchlist []
+//                let cdAlertObject = cdStockieUserObject.alerts[i]
+//
+//                if !stockieUserObject.alerts.contains(cdAlertObject) {
+//                    //If CoreData Watchlist is not existant in the Watchlist []
+//                    //This means that the Watchlist has been REMOVED
+//
+//                    try remove(alertByID: cdAlertObject.alertID)
+//                    cdStockieUserObject.alerts.remove(at: i)
+//                }
+//            }
+//        }
+//
+//        try update(stockieUserAttributes: stockieUserObject)
     }
     
     /**
@@ -314,43 +305,25 @@ class CoreDataHandler: NSObject {
         let managedContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedContext.parent = staticManagedContext
         
-        var cdWatchlistObject = try getWatchlist(forWatchlistID: watchlistObject.watchlistID, andUsername: username)
-        var tempWatchlistObject = watchlistObject;
+        let cdWatchlistObject = try getWatchlist(forWatchlistID: watchlistObject.watchlistID, andUsername: username)
         
-        if tempWatchlistObject == cdWatchlistObject {
-            return
-        } else if tempWatchlistObject.stocks == cdWatchlistObject.stocks {
-            try update(watchlistAttributes: watchlistObject)
-            return
-        }
+        var stocksToDelete : [StockObject] = NSArray(array: cdWatchlistObject.stocks) as! [StockObject]
+        var stocksToAppend : [StockObject] = NSArray(array: watchlistObject.stocks) as! [StockObject]
+        var stocksToUpdate : [StockObject] = []
         
-        var index = 0
-        for i in 0..<tempWatchlistObject.stocks.count {
-            let stockObject = tempWatchlistObject.stocks[index]
-            //if cdWatchlistObject.stocks.count == 0 { break }
-            
-            if !cdWatchlistObject.stocks.contains(stockObject) {
-                do {
-                    try save(stockObject: stockObject, toWatchlistObject: cdWatchlistObject)
-                    
-                    index += 1
-                } catch CoreDataHandlerErrors.duplicateWatchlistStockAssociations {
-                    try update(stockAttributes: stockObject)
-                    
-                    tempWatchlistObject.stocks.remove(at: index)
+        for i in 0..<cdWatchlistObject.stocks.count {
+            for j in 0..<watchlistObject.stocks.count {
+                if cdWatchlistObject.stocks[i].symbol == watchlistObject.stocks[j].symbol {
+                    stocksToDelete.remove(at: stocksToDelete.lastIndex(of: cdWatchlistObject.stocks[i])!)
+                    stocksToAppend.remove(at: stocksToAppend.lastIndex(of: watchlistObject.stocks[j])!)
+                    stocksToUpdate.append(watchlistObject.stocks[j])
                 }
-            } else {
-                try update(stockAttributes: stockObject)
-                
-                tempWatchlistObject.stocks.remove(at: index)
             }
         }
         
-        for cdStockObject in cdWatchlistObject.stocks {
-            if !watchlistObject.stocks.contains(cdStockObject) {
-                try remove(watchlistStockAssociationByIDs: watchlistObject.watchlistID, symbol: cdStockObject.symbol)
-            }
-        }
+        for stockToDelete in stocksToDelete { try remove(watchlistStockAssociationByWatchlistID: cdWatchlistObject.watchlistID, symbol: stockToDelete.symbol)}
+        for stockToAppend in stocksToAppend { try save(stockObject: stockToAppend, toWatchlistObject: cdWatchlistObject) }
+        for stockToUpdate in stocksToUpdate { try update(stockAttributes: stockToUpdate) }
         
         try update(watchlistAttributes: watchlistObject)
     }
@@ -372,6 +345,8 @@ class CoreDataHandler: NSObject {
         object.setValue(stockieUserObject.username, forKey: "username")
         
         try managedContext.save()
+        
+        asyncSave()
     }
     
     private static func update(watchlistAttributes watchlistObject: WatchlistObject) throws {
@@ -390,6 +365,8 @@ class CoreDataHandler: NSObject {
         object.setValue(watchlistObject.name, forKey: "name")
         
         try managedContext.save()
+        
+        asyncSave()
     }
     
     static func update(stockAttributes stockObject: StockObject) throws {
@@ -409,9 +386,11 @@ class CoreDataHandler: NSObject {
         object.setValue(stockObject.lastPrice, forKey: "lastPrice")
         
         try managedContext.save()
+        
+        asyncSave()
     }
     
-    private static func update(alertAttributes alertObject: AlertObject, toStockieUserObject stockieUserObject: StockieUserObject) throws {
+    private static func update(alertAttributes alertObject: AlertObject, toUsername username: String) throws {
         let managedContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedContext.parent = staticManagedContext
         
@@ -424,7 +403,7 @@ class CoreDataHandler: NSObject {
         if objects.count == 0 { throw CoreDataHandlerErrors.invalidAlert(alertID: alertObject.alertID) }
         let object = objects[0] as NSManagedObject
         
-        object.setValue(stockieUserObject.username, forKey: "username")
+        object.setValue(username, forKey: "username")
         object.setValue(alertObject.symbol, forKey: "symbol")
         object.setValue(alertObject.price, forKey: "price")
         object.setValue(alertObject.overPrice, forKey: "overPrice")
@@ -432,6 +411,8 @@ class CoreDataHandler: NSObject {
         object.setValue(alertObject.hidden, forKey: "hidden")
         
         try managedContext.save()
+        
+        asyncSave()
     }
     
     
@@ -539,6 +520,9 @@ class CoreDataHandler: NSObject {
                 managedContext.delete(object)
                 
                 try managedContext.save()
+                
+                asyncSave()
+                
                 print("Deleted invalid User.")
             }
         }
@@ -565,6 +549,9 @@ class CoreDataHandler: NSObject {
                 managedContext.delete(object)
                 
                 try managedContext.save()
+                
+                asyncSave()
+                
                 print("Deleted invalid Watchlist.")
             }
         }
@@ -590,6 +577,9 @@ class CoreDataHandler: NSObject {
                 managedContext.delete(object)
                 
                 try managedContext.save()
+                
+                asyncSave()
+                
                 print("Deleted invalid Stock.")
             }
         }
@@ -636,6 +626,9 @@ class CoreDataHandler: NSObject {
                 managedContext.delete(object)
                 
                 try managedContext.save()
+                
+                asyncSave()
+                
                 print("Deleted invalid Alert.")
             }
         }
@@ -662,6 +655,9 @@ class CoreDataHandler: NSObject {
                 managedContext.delete(object)
                 
                 try managedContext.save()
+                
+                asyncSave()
+                
                 print("Deleted invalid Alert.")
             }
         }
@@ -688,6 +684,9 @@ class CoreDataHandler: NSObject {
                 managedContext.delete(object)
                 
                 try managedContext.save()
+                
+                asyncSave()
+                
                 print("Deleted invalid Alert.")
             }
         }
@@ -714,6 +713,9 @@ class CoreDataHandler: NSObject {
                 managedContext.delete(object)
                 
                 try managedContext.save()
+                
+                asyncSave()
+                
                 print("Deleted invalid Alert.")
             }
         }
@@ -788,6 +790,8 @@ class CoreDataHandler: NSObject {
             managedContext.delete(object)
             
             try managedContext.save()
+            
+            asyncSave()
         }
     }
     
@@ -805,6 +809,8 @@ class CoreDataHandler: NSObject {
             managedContext.delete(object)
             
             try managedContext.save()
+            
+            asyncSave()
         }
     }
     
@@ -822,10 +828,12 @@ class CoreDataHandler: NSObject {
             managedContext.delete(object)
             
             try managedContext.save()
+            
+            asyncSave()
         }
     }
     
-    static func remove(watchlistStockAssociationByIDs watchlistID: String, symbol: String) throws {
+    static func remove(watchlistStockAssociationByWatchlistID watchlistID: String, symbol: String) throws {
         let managedContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedContext.parent = staticManagedContext
         
@@ -839,6 +847,8 @@ class CoreDataHandler: NSObject {
             managedContext.delete(object)
             
             try managedContext.save()
+            
+            asyncSave()
         }
     }
     
@@ -856,7 +866,20 @@ class CoreDataHandler: NSObject {
             managedContext.delete(object)
             
             try managedContext.save()
+            
+            asyncSave()
         }
+        
+        asyncSave()
     }
     
+    static func asyncSave() {
+        DispatchQueue.main.async {
+            do {
+                try staticManagedContext.save()
+            } catch {
+                print("Error saving staticManagedContext: \(error)")
+            }
+        }
+    }
 }

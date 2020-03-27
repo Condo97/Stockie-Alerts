@@ -69,60 +69,61 @@ class SelectWatchlistTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.section == 1 { addWatchlist() }
-        
-        do {
-            let identityToken = try CoreDataHandler.getIdentityToken(UserDefaults.standard.string(forKey: "loggedInUser")!)
-            
-            NetworkHandler.addStockToWatchlist(identityToken, watchlistID: watchlists[indexPath.row].watchlistID, stockSymbol: symbol) {
-                error in
+        else {
+            do {
+                let identityToken = try CoreDataHandler.getIdentityToken(UserDefaults.standard.string(forKey: "loggedInUser")!)
                 
-                if error == NetworkError.Success {
-                    NetworkHandler.addStockToWatchlist(identityToken, watchlistID: self.watchlists[0].watchlistID, stockSymbol: self.symbol) {
-                        error in
-                        
-                        DispatchQueue.main.async {
-                            if error == NetworkError.Success || error == NetworkError.DuplicateIdentifier {
-                                NetworkHandler.addAlert(identityToken, stockSymbol: self.symbol, price: self.price) {
-                                    error in
-                                    DispatchQueue.main.async {
-                                        if error == NetworkError.Success {
-                                            self.dismiss(animated: true, completion: nil)
-                                        } else if error == NetworkError.ExpiredIdentity {
-                                            self.dismiss(animated: true, completion: nil)
-                                        } else {
-                                            let alert = UIAlertController(title: "Something Happened...", message: "We apologize, for some reason we can't add the new Alert. Please try again soon.", preferredStyle: .alert)
-                                            alert.addAction(UIAlertAction(title: "Done", style: .default) {
-                                                action in
+                NetworkHandler.addStockToWatchlist(identityToken, watchlistID: watchlists[indexPath.row].watchlistID, stockSymbol: symbol) {
+                    error in
+                    
+                    if error == NetworkError.Success {
+                        NetworkHandler.addStockToWatchlist(identityToken, watchlistID: self.watchlists[0].watchlistID, stockSymbol: self.symbol) {
+                            error in
+                            
+                            DispatchQueue.main.async {
+                                if error == NetworkError.Success || error == NetworkError.DuplicateIdentifier {
+                                    NetworkHandler.addAlert(identityToken, stockSymbol: self.symbol, price: self.price) {
+                                        error in
+                                        DispatchQueue.main.async {
+                                            if error == NetworkError.Success {
                                                 self.dismiss(animated: true, completion: nil)
-                                            })
-                                            
-                                            self.present(alert, animated: true, completion: nil)
+                                            } else if error == NetworkError.ExpiredIdentity {
+                                                self.dismiss(animated: true, completion: nil)
+                                            } else {
+                                                let alert = UIAlertController(title: "Something Happened...", message: "We apologize, for some reason we can't add the new Alert. Please try again soon.", preferredStyle: .alert)
+                                                alert.addAction(UIAlertAction(title: "Done", style: .default) {
+                                                    action in
+                                                    self.dismiss(animated: true, completion: nil)
+                                                })
+                                                
+                                                self.present(alert, animated: true, completion: nil)
+                                            }
                                         }
                                     }
-                                }
-                            } else if error == NetworkError.ExpiredIdentity {
-                                self.dismiss(animated: true, completion: nil)
-                            } else {
-                                let alert = UIAlertController(title: "Something Happened...", message: "We apologize, for some reason we can't add the Stock to your Watchlist. Please try again soon.", preferredStyle: .alert)
-                                alert.addAction(UIAlertAction(title: "Done", style: .default) {
-                                    action in
+                                } else if error == NetworkError.ExpiredIdentity {
                                     self.dismiss(animated: true, completion: nil)
-                                })
-                                
-                                self.present(alert, animated: true, completion: nil)
+                                } else {
+                                    let alert = UIAlertController(title: "Something Happened...", message: "We apologize, for some reason we can't add the Stock to your Watchlist. Please try again soon.", preferredStyle: .alert)
+                                    alert.addAction(UIAlertAction(title: "Done", style: .default) {
+                                        action in
+                                        self.dismiss(animated: true, completion: nil)
+                                    })
+                                    
+                                    self.present(alert, animated: true, completion: nil)
+                                }
                             }
                         }
                     }
                 }
+            } catch {
+                let alert = UIAlertController(title: "Something Happened...", message: "We apologize, for some reason we couldn't read your Watchlists. Please try again soon.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Done", style: .default) {
+                    action in
+                    self.dismiss(animated: true, completion: nil)
+                })
+                
+                self.present(alert, animated: true, completion: nil)
             }
-        } catch {
-            let alert = UIAlertController(title: "Something Happened...", message: "We apologize, for some reason we couldn't read your Watchlists. Please try again soon.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Done", style: .default) {
-                action in
-                self.dismiss(animated: true, completion: nil)
-            })
-            
-            self.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -145,7 +146,7 @@ class SelectWatchlistTableViewController: UITableViewController {
                     
                     if error == NetworkError.Success {
                         do {
-                            try CoreDataHandler.save(watchlistObject: WatchlistObject(name: watchlistName, watchlistID: watchlistID, isDefault: true, stocks: []), toUsername: UserDefaults.standard.string(forKey: "loggedInUser")!)
+                            try CoreDataHandler.save(watchlistObject: WatchlistObject(name: watchlistName, watchlistID: watchlistID, isDefault: false, stocks: []), toUsername: UserDefaults.standard.string(forKey: "loggedInUser")!)
                             
                             self.getWatchlists()
                             
@@ -156,6 +157,7 @@ class SelectWatchlistTableViewController: UITableViewController {
                     }
                 }
             }
+            
             saveWatchlistAction.isEnabled = false
             alertController.addAction(saveWatchlistAction)
             

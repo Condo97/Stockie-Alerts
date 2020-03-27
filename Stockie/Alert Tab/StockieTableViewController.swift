@@ -70,61 +70,57 @@ class StockieTableViewController: UITableViewController, UITextFieldDelegate, Al
     
     func initGetFromCoreData() {
         do {
-            tableView.beginUpdates()
             let tempAlerts = try CoreDataHandler.getAlerts(forUsername: UserDefaults.standard.string(forKey: "loggedInUser")!)
             
-            var index = 0
-            for i in 0..<tempAlerts.count {
-                let tempAlert = tempAlerts[i]
+            //(1) Create Temporary Active and Inactive Alert Arrays
+            var tempActiveAlerts : [AlertObject] = []
+            var tempInactiveAlerts : [AlertObject] = []
+            
+            for tempAlert in tempAlerts {
                 if !tempAlert.hidden {
-                    if !tempAlert.executed {
-                        if !activeAlerts.contains(tempAlert) {
-                            if self.activeAlerts.count == 0 {
-                                tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-                            }
-                            
-                            tableView.insertRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-                            activeAlerts.append(tempAlert)
-                        } else { index += 1 }
-                    } else {
-                        if !inactiveAlerts.contains(tempAlert) {
-                            if self.inactiveAlerts.count == 0 {
-                                tableView.deleteRows(at: [IndexPath(row: index, section: 1)], with: .automatic)
-                            }
-                            
-                            tableView.insertRows(at: [IndexPath(row: inactiveAlerts.count - 1, section: 0)], with: .automatic)
-                            inactiveAlerts.append(tempAlert)
-                        } else { index += 1 }
-                    }
+                    if !tempAlert.executed { tempActiveAlerts.append(tempAlert) }
+                    else { tempInactiveAlerts.append(tempAlert) }
                 }
             }
             
-            for alert in activeAlerts {
-                if !alert.hidden {
-                    if !tempAlerts.contains(alert) {
-                        if self.activeAlerts.count == 1 {
-                            tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-                        }
-                        
-                        tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-                        activeAlerts.remove(at: activeAlerts.firstIndex(of: alert)!)
-                    }
-                    
-                }
+            //(2) Find difference in count of Temporary and Real Arrays
+            let activeAlertRowsToAdd = tempActiveAlerts.count - activeAlerts.count
+            let inactiveAlertRowsToAdd = tempInactiveAlerts.count - inactiveAlerts.count
+            
+            //(2.5) Check if placeholder rows need to be removed
+            tableView.beginUpdates()
+            
+            if activeAlerts.count == 0 && tempActiveAlerts.count != 0 && tableView.numberOfRows(inSection: 0) == 1 { tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic) }
+            if inactiveAlerts.count == 0 && tempInactiveAlerts.count != 0 && tableView.numberOfRows(inSection: 1) == 1 { tableView.deleteRows(at: [IndexPath(row: 0, section: 1)], with: .automatic) }
+            
+            //(3) Delete rows if negative, add rows if positive
+            if activeAlertRowsToAdd < 0 {
+                var indexPaths : [IndexPath] = []
+                for i in 0..<(activeAlertRowsToAdd * -1) { indexPaths.append(IndexPath(row: i, section: 0)) }
+                tableView.deleteRows(at: indexPaths, with: .automatic)
+            } else if activeAlertRowsToAdd > 0 {
+                var indexPaths : [IndexPath] = []
+                for i in 0..<activeAlertRowsToAdd { indexPaths.append(IndexPath(row: i, section: 0)) }
+                tableView.insertRows(at: indexPaths, with: .automatic)
             }
             
-            for alert in inactiveAlerts {
-                if !alert.hidden {
-                    if !inactiveAlerts.contains(alert) {
-                        if self.inactiveAlerts.count == 1 {
-                            tableView.insertRows(at: [IndexPath(row: 0, section: 1)], with: .automatic)
-                        }
-                        
-                        tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-                        inactiveAlerts.remove(at: inactiveAlerts.firstIndex(of: alert)!)
-                    }
-                }
+            if inactiveAlertRowsToAdd < 0 {
+                var indexPaths : [IndexPath] = []
+                for i in 0..<(inactiveAlertRowsToAdd * -1) { indexPaths.append(IndexPath(row: i, section: 1)) }
+                tableView.deleteRows(at: indexPaths, with: .automatic)
+            } else if inactiveAlertRowsToAdd > 0 {
+                var indexPaths : [IndexPath] = []
+                for i in 0..<inactiveAlertRowsToAdd { indexPaths.append(IndexPath(row: i, section: 1)) }
+                tableView.insertRows(at: indexPaths, with: .automatic)
             }
+            
+            //(3.5) If no alerts exist, then placeholders must be added
+            if activeAlerts.count != 0 && tempActiveAlerts.count == 0 { tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic) }
+            if inactiveAlerts.count != 0 && tempInactiveAlerts.count == 0 { tableView.insertRows(at: [IndexPath(row: 0, section: 1)], with: .automatic) }
+            
+            //(4) Set real to temporary :)
+            activeAlerts = NSArray(array: tempActiveAlerts) as! [AlertObject]
+            inactiveAlerts = NSArray(array: tempInactiveAlerts) as! [AlertObject]
             
             tableView.endUpdates()
             tableView.reloadData()
@@ -256,6 +252,7 @@ class StockieTableViewController: UITableViewController, UITextFieldDelegate, Al
                 }
                 
             } catch {
+                print("Error getting IdentityToken or DefaultWatchlist in AddButton(): \(error)")
             }
         }
     }

@@ -54,7 +54,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
                         NetworkHandler.getWatchlists(stockieUserObject.identityToken) {
                             watchlistObjects, watchlistError in
                             if watchlistError == .Success {
-                                stockieUserObject.watchlists = watchlistObjects ?? []
+                                stockieUserObject.watchlists = watchlistObjects
                                 
                                 do {
                                     try CoreDataHandler.save(stockieUserObject: stockieUserObject)
